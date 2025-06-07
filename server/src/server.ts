@@ -4,28 +4,17 @@ import {
   ProposedFeatures,
   InitializeParams,
   InitializeResult,
-  type WatchDog,
   TextDocumentSyncKind,
   Diagnostic,
   DiagnosticSeverity,
   CompletionItem,
   CompletionItemKind,
   InsertTextFormat,
-} from "vscode-languageserver";
+} from "vscode-languageserver/node";
 import { TextDocument } from "vscode-languageserver-textdocument";
 import * as jsYaml from "js-yaml";
 
-const connection = createConnection(
-  (_logger) => {
-    return require("vscode-languageserver").createProtocolConnection(
-      process.stdin,
-      process.stdout,
-      _logger
-    );
-  },
-  {} as WatchDog,
-  ProposedFeatures.all
-);
+const connection = createConnection(ProposedFeatures.all);
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
 connection.onInitialize((params: InitializeParams): InitializeResult => {
