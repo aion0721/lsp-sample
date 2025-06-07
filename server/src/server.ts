@@ -22,6 +22,7 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
     capabilities: {
       textDocumentSync: TextDocumentSyncKind.Incremental,
       completionProvider: { triggerCharacters: [":", '"'] },
+      hoverProvider: true,
     },
   };
 });
@@ -141,7 +142,7 @@ connection.onHover((params) => {
   if (!doc) return undefined;
   const position = params.position;
   const text = doc.getText();
-  const lines = text.split(/r?\n/);
+  const lines = text.split(/\r?\n/);
   const hoverLine = lines[position.line];
   if (/^\s*servername\s*:/.test(hoverLine)) {
     return {
