@@ -11,7 +11,7 @@ let client: LanguageClient;
 
 export function activate(context: vscode.ExtensionContext) {
   const serverModule = context.asAbsolutePath(
-    path.join("server", "out", "server.js")
+    path.join("out", "server", "src", "server.js")
   );
   const ServerOptions: ServerOptions = {
     run: { module: serverModule, transport: TransportKind.ipc },

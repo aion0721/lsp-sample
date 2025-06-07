@@ -8,7 +8,7 @@
   "activationEvents": [
     "onLanguage:yaml"
   ],
-  "main": "./client/out/extention.js",
+  "main": "./out/client/src/extention.js",
   "contributes": {
     "languages": [
       {
