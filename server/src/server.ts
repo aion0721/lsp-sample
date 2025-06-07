@@ -104,18 +104,23 @@ connection.onCompletion((params) => {
 
   let suggestions: CompletionItem[] = [];
 
+  const text = doc.getText();
   let yamlData: any;
   try {
-    yamlData = jsYaml.load(doc.getText());
+    yamlData = jsYaml.load(text);
   } catch {
     yamlData = null;
   }
 
-  if (
-    typeof yamlData === "object" &&
-    yamlData !== null &&
-    !("servername" in yamlData)
-  ) {
+  let hasServerName = false;
+  if (typeof yamlData === "object" && yamlData !== null) {
+    hasServerName = Object.prototype.hasOwnProperty.call(yamlData, "servername");
+  } else {
+    const regex = /^\s*servername\s*:/m;
+    hasServerName = regex.test(text);
+  }
+
+  if (!hasServerName) {
     suggestions.push({
       label: "servername",
       kind: CompletionItemKind.Property,
