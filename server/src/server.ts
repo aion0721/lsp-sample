@@ -114,7 +114,10 @@ connection.onCompletion((params) => {
 
   let hasServerName = false;
   if (typeof yamlData === "object" && yamlData !== null) {
-    hasServerName = Object.prototype.hasOwnProperty.call(yamlData, "servername");
+    hasServerName = Object.prototype.hasOwnProperty.call(
+      yamlData,
+      "servername"
+    );
   } else {
     const regex = /^\s*servername\s*:/m;
     hasServerName = regex.test(text);
@@ -131,4 +134,24 @@ connection.onCompletion((params) => {
   }
 
   return suggestions;
+});
+
+connection.onHover((params) => {
+  const doc = documents.get(params.textDocument.uri);
+  if (!doc) return undefined;
+  const position = params.position;
+  const text = doc.getText();
+  const lines = text.split(/r?\n/);
+  const hoverLine = lines[position.line];
+  if (/^\s*servername\s*:/.test(hoverLine)) {
+    return {
+      contents: {
+        kind: "markdown",
+        value:
+          "**servername**: サーバの名前を指定する文字列プロパティ \n これ必須です。",
+      },
+    };
+  }
+
+  return undefined;
 });
